@@ -1,9 +1,14 @@
 import telegram
 
+BOT_TOKEN = os.environ['TG_KEY']
+CHAT_ID = "@space_photos88"
+PHOTO_PATH = "photo.jpg"
 
-from dotenv import load_dotenv
-load_dotenv()
+def send_photo():
+    bot = telegram.Bot(token=BOT_TOKEN)
+    
+    with open(PHOTO_PATH, "rb") as photo:
+        bot.send_photo(chat_id=CHAT_ID, photo=photo)
 
-
-bot = telegram.Bot(token = os.environ['TG_KEY'])
-bot.send_message(chat_id='@space_photos88', text="Здесь будут фотографии космоса!")
+if __name__ == "__main__":
+    send_photo()
