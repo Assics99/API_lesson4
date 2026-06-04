@@ -50,7 +50,7 @@ def main():
         print("Ошибка: переменная окружения API_KEY не установлена")
         return
     
-    # Создаём папку, если её нет (exist_ok=True не вызовет ошибку, если папка уже существует)
+    # Создаём папку, если её нет
     os.makedirs(folder_name, exist_ok=True)
     
     try:
