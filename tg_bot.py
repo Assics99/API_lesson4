@@ -38,9 +38,20 @@ def validate_environment():
 
 def parse_arguments():
     """Разбирает аргументы командной строки"""
-    parser = argparse.ArgumentParser()
-    parser.add_argument("folder", help="Папка с фото")
-    parser.add_argument("interval", type=float, help="Интервал в часах")
+    parser = argparse.ArgumentParser(
+        description="Бот для отправки фотографий из указанной папки в Telegram"
+    )
+    parser.add_argument(
+        "folder", 
+        help="Папка с фото"
+    )
+    parser.add_argument(
+        "interval", 
+        type=float, 
+        nargs='?',  # Делаем аргумент необязательным
+        default=4.0,  # Значение по умолчанию - 4 часа
+        help="Интервал в часах (по умолчанию: 4 часа)"
+    )
     return parser.parse_args()
 
 def run_bot_loop(bot, chat_id, folder, interval_hours):
@@ -57,6 +68,7 @@ def main():
         args = parse_arguments()
         
         bot = telegram.Bot(token=BOT_TOKEN)
+        print(f"Запуск бота. Папка: {args.folder}, Интервал: {args.interval} часов")
         run_bot_loop(bot, CHAT_ID, args.folder, args.interval)
         
     except ValueError as e:
