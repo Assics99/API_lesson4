@@ -50,8 +50,8 @@ def main():
         print("Ошибка: переменная окружения API_KEY не установлена")
         return
     
-    if not os.path.exists(folder_name):
-        os.makedirs(folder_name)
+    # Создаём папку, если её нет (exist_ok=True не вызовет ошибку, если папка уже существует)
+    os.makedirs(folder_name, exist_ok=True)
     
     try:
         epic_links = get_epic_images(api_key)
