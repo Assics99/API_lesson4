@@ -2,9 +2,12 @@ import os
 import time
 import argparse
 import telegram
+from dotenv import load_dotenv
 
-BOT_TOKEN = os.environ['TG_KEY']
-CHAT_ID = "@space_photos88"
+load_dotenv()
+
+BOT_TOKEN = os.environ.get('TG_KEY')
+CHAT_ID = os.environ.get('TG_CHAT_ID')
 
 def get_photos(folder):
     exts = (".jpg", ".jpeg", ".png", ".webp")
@@ -16,6 +19,13 @@ def send_photos(bot, photos):
             bot.send_photo(chat_id=CHAT_ID, photo=photo)
 
 def main():
+    if not BOT_TOKEN:
+        print("Ошибка: переменная окружения TG_KEY не установлена")
+        return
+    if not CHAT_ID:
+        print("Ошибка: переменная окружения TG_CHAT_ID не установлена")
+        return
+    
     parser = argparse.ArgumentParser()
     parser.add_argument("folder", help="Папка с фото")
     parser.add_argument("interval", type=float, help="Интервал в часах")
