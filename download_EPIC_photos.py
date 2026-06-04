@@ -15,9 +15,9 @@ def get_epic_images(api_key, count=10):
     data = response.json()
     
     images = []
-    for i in data[:count]:
-        image_name = i["image"]
-        date_str = i["date"]
+    for item in data[:count]:
+        image_name = item["image"]
+        date_str = item["date"]
         dt = datetime.fromisoformat(date_str.replace('Z', '+00:00'))
         date = dt.strftime('%Y-%m-%d')
         year, month, day = date.split("-")
@@ -49,9 +49,9 @@ def download_epic_images(api_key, folder=FOLDER_NAME, count=10):
     
     epic_links = get_epic_images(api_key, count)
     
-    for i, link in enumerate(epic_links):
-        print(f"Скачиваю {i+1} из {len(epic_links)}: {link}")
-        save_image_from_url(link, folder, i)
+    for index, link in enumerate(epic_links):
+        print(f"Скачиваю {index + 1} из {len(epic_links)}: {link}")
+        save_image_from_url(link, folder, index)
     
     print(f"Готово! Скачано {len(epic_links)} EPIC фото в папку '{folder}'")
     return len(epic_links)
