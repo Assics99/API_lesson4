@@ -1,8 +1,9 @@
 import requests
 import os
 from urllib.parse import urlparse
+from datetime import datetime
 
-folder_name = 'images'
+FOLDER_NAME = 'images'
 
 def get_epic_images(api_key, count=10):
     url = "https://api.nasa.gov/EPIC/api/natural"
@@ -16,7 +17,9 @@ def get_epic_images(api_key, count=10):
     images = []
     for i in data[:count]:
         image_name = i["image"]
-        date = i["date"].split(" ")[0]
+        date_str = i["date"]
+        dt = datetime.fromisoformat(date_str.replace('Z', '+00:00'))
+        date = dt.strftime('%Y-%m-%d')
         year, month, day = date.split("-")
         image_url = f"https://epic.gsfc.nasa.gov/archive/natural/{year}/{month}/{day}/jpg/{image_name}.jpg"
         images.append(image_url)
@@ -28,7 +31,7 @@ def get_file_extension(url):
     extension = result[1]
     return extension
 
-def download_image(url, folder, index):
+def save_image_from_url(url, folder, index):
     response = requests.get(url)
     response.raise_for_status()
     
@@ -41,6 +44,18 @@ def download_image(url, folder, index):
     with open(file_path, 'wb') as file:
         file.write(response.content)
 
+def download_epic_images(api_key, folder=FOLDER_NAME, count=10):
+    os.makedirs(folder, exist_ok=True)
+    
+    epic_links = get_epic_images(api_key, count)
+    
+    for i, link in enumerate(epic_links):
+        print(f"Скачиваю {i+1} из {len(epic_links)}: {link}")
+        save_image_from_url(link, folder, i)
+    
+    print(f"Готово! Скачано {len(epic_links)} EPIC фото в папку '{folder}'")
+    return len(epic_links)
+
 def main():
     from dotenv import load_dotenv
     load_dotenv()
@@ -50,17 +65,8 @@ def main():
         print("Ошибка: переменная окружения API_KEY не установлена")
         return
     
-    # Создаём папку, если её нет
-    os.makedirs(folder_name, exist_ok=True)
-    
     try:
-        epic_links = get_epic_images(api_key)
-        
-        for i, link in enumerate(epic_links):
-            print(f"Скачиваю {i+1} из {len(epic_links)}: {link}")
-            download_image(link, folder_name, i)
-        
-        print(f"Готово! Скачано {len(epic_links)} EPIC фото в папку '{folder_name}'")
+        download_epic_images(api_key=api_key, folder=FOLDER_NAME, count=10)
     
     except requests.exceptions.RequestException as e:
         print(f"Ошибка при загрузке: {e}")
