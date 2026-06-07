@@ -9,17 +9,14 @@ def get_photos(folder):
     return [os.path.join(folder, f) for f in os.listdir(folder) if f.lower().endswith(exts)]
 
 def send_single_photo(bot, chat_id, photo_path):
-    """Отправляет одно фото по заданному пути"""
     with open(photo_path, "rb") as photo:
         bot.send_photo(chat_id=chat_id, photo=photo)
 
 def send_photos(bot, chat_id, photos):
-    """Отправляет список фото (теперь только управляет порядком)"""
     for photo_path in photos:
         send_single_photo(bot, chat_id, photo_path)
 
 def validate_environment():
-    """Проверяет наличие необходимых переменных окружения"""
     from dotenv import load_dotenv
     load_dotenv()
     
@@ -34,7 +31,6 @@ def validate_environment():
     return bot_token, chat_id
 
 def parse_arguments():
-    """Разбирает аргументы командной строки"""
     parser = argparse.ArgumentParser(
         description="Бот для отправки фотографий из указанной папки в Telegram"
     )
@@ -52,7 +48,6 @@ def parse_arguments():
     return parser.parse_args()
 
 def send_photos_with_retry(bot, chat_id, photos, retry_delay=5):
-    """Отправляет фото с повторными попытками при сетевых ошибках"""
     for photo_path in photos:
         while True:
             try:
@@ -67,7 +62,6 @@ def send_photos_with_retry(bot, chat_id, photos, retry_delay=5):
                 break
 
 def run_bot_loop(bot, chat_id, folder, interval_hours, retry_delay=5):
-    """Основной цикл отправки фото с устойчивостью к сетевым ошибкам"""
     while True:
         try:
             photos = get_photos(folder)
