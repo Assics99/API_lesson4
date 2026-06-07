@@ -12,18 +12,22 @@
 ### Установка зависимостей
 
 1. Склонируйте репозиторий и перейдите в папку проекта:
+   ```bash
    git clone <URL вашего репозитория>
    cd <название папки проекта>
+   ```
 
 2. Создайте файл requirements.txt:
+   ```bash
    echo "requests>=2.31.0
    python-dotenv>=1.0.0" > requirements.txt
+   ```
 
 3. Установите зависимости:
-   pip install -r requirements.txt
+   `pip install -r requirements.txt`
 
 4. Проверьте, что все библиотеки установились без ошибок:
-   pip list
+   `pip list`
 
 ## Настройка API-ключей
 
@@ -33,49 +37,62 @@
 
 Этот ключ нужен для загрузки фотографий с серверов NASA.
 
-1. Перейдите на сайт NASA API: https://api.nasa.gov/
+1. Перейдите на сайт NASA API: <https://api.nasa.gov/>
 2. Нажмите Generate API Key.
 3. Заполните форму (укажите имя и email) и нажмите Signup.
 4. Скопируйте полученный ключ.
 
 ## Настройка переменных окружения
 
-Для безопасного хранения ключа его нужно поместить в переменные окружения. Создайте в корне проекта файл .env:
+Для безопасного хранения ключа его нужно поместить в переменные окружения. Создайте в корне проекта файл `.env`:
 
+```env
 API_KEY=ваш_ключ_от_NASA
+```
 
-Примечание: убедитесь, что файл .env добавлен в .gitignore, чтобы случайно не опубликовать секретные данные на GitHub.
+Примечание: убедитесь, что файл .env добавлен в `.gitignore`, чтобы случайно не опубликовать секретные данные на GitHub.
 
 ### Проверка переменных окружения
 
 Запустите в консоли (временно, для проверки):
+```bash
 python -c "from dotenv import load_dotenv; import os; load_dotenv(); print('API_KEY:', bool(os.getenv('API_KEY')))"
+```
 
 Вывод должен быть:
+```text
 API_KEY: True
+```
 
 ## Быстрый запуск
 
 Пример запуска скрипта:
 
-$ python main.py
+```bash
+python main.py
+```
 
-Скрипт не выводит сообщения в консоль. Фотографии сохраняются в папку images/
+Скрипт не выводит сообщения в консоль. Фотографии сохраняются в папку `images/`
 
 ### Проверка результата
 
 Чтобы убедиться, что скрипт сработал, выполните:
 
-$ ls images/
+```bash
+ls images/
+```
 
 Вывод должен быть примерно таким:
+```text
 photo_0.jpg  photo_1.png  photo_2.jpg  photo_3.jpg  photo_4.jpg
 photo_5.jpg  photo_6.jpg  photo_7.jpg  photo_8.jpg  photo_9.jpg
+```
 
 ### Структура после запуска
 
 После успешного выполнения скрипта в папке проекта появится:
 
+```text
 ваш_проект/
 ├── images/
 │   ├── photo_0.jpg
@@ -85,32 +102,35 @@ photo_5.jpg  photo_6.jpg  photo_7.jpg  photo_8.jpg  photo_9.jpg
 ├── main.py
 ├── .env
 └── requirements.txt
+```
 
 ### Возможные ошибки при запуске
 
-Ошибка: ModuleNotFoundError: No module named 'requests'
-Решение: Запустите pip install -r requirements.txt
+Ошибка: `ModuleNotFoundError: No module named 'requests'`
+Решение: Запустите `pip install -r requirements.txt`
 
-Ошибка: KeyError: 'API_KEY'
-Решение: Проверьте наличие API_KEY=ваш_ключ в файле .env
+Ошибка: `KeyError: 'API_KEY'`
+Решение: Проверьте наличие `API_KEY=ваш_ключ` в файле `.env`
 
-Ошибка: requests.exceptions.HTTPError: 403
-Решение: Неверный API ключ, получите новый на https://api.nasa.gov/
+Ошибка: `requests.exceptions.HTTPError: 403`
+Решение: Неверный API ключ, получите новый на `https://api.nasa.gov/`
 
-Ошибка: requests.exceptions.ConnectionError
+Ошибка: `requests.exceptions.ConnectionError`
 Решение: Проверьте интернет-соединение
 
 ## Подробный запуск
 
 Для запуска скрипта выполните команду:
+```bash
 python main.py
+```
 
 ### Что делает скрипт
 
-1. Загружает 10 фотографий из NASA Astronomy Picture of the Day (APOD)
-2. Сохраняет их в папку images/
+1. Загружает 10 фотографий из `NASA Astronomy Picture of the Day (APOD)` (APOD)
+2. Сохраняет их в папку `images/`
 3. Автоматически определяет расширение файла (jpg/png и т.д.)
 
 ## Цель проекта
 
-Код написан в образовательных целях на онлайн-курсе для веб-разработчиков dvmn.org: https://dvmn.org/
+Код написан в образовательных целях на онлайн-курсе для веб-разработчиков `dvmn.org`: [dvmn.org](https://dvmn.org/)
