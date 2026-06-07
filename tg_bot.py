@@ -2,6 +2,7 @@ import os
 import time
 import argparse
 import telegram
+from telegram.error import NetworkError, TimedOut
 
 def get_photos(folder):
     exts = (".jpg", ".jpeg", ".png", ".webp")
@@ -50,12 +51,37 @@ def parse_arguments():
     )
     return parser.parse_args()
 
-def run_bot_loop(bot, chat_id, folder, interval_hours):
-    """Основной цикл отправки фото"""
+def send_photos_with_retry(bot, chat_id, photos, retry_delay=5):
+    """Отправляет фото с повторными попытками при сетевых ошибках"""
+    for photo_path in photos:
+        while True:
+            try:
+                send_single_photo(bot, chat_id, photo_path)
+                break
+            except (NetworkError, TimedOut) as e:
+                print(f"Сетевая ошибка при отправке {photo_path}: {e}")
+                print(f"Повторная попытка через {retry_delay} секунд...")
+                time.sleep(retry_delay)
+            except Exception as e:
+                print(f"Неожиданная ошибка при отправке {photo_path}: {e}")
+                break
+
+def run_bot_loop(bot, chat_id, folder, interval_hours, retry_delay=5):
+    """Основной цикл отправки фото с устойчивостью к сетевым ошибкам"""
     while True:
-        photos = get_photos(folder)
-        if photos:
-            send_photos(bot, chat_id, photos)
+        try:
+            photos = get_photos(folder)
+            if photos:
+                send_photos_with_retry(bot, chat_id, photos, retry_delay)
+        except (NetworkError, TimedOut) as e:
+            print(f"Сетевая ошибка в основном цикле: {e}")
+            print(f"Повторная попытка через {retry_delay} секунд...")
+            time.sleep(retry_delay)
+            continue
+        except Exception as e:
+            print(f"Неожиданная ошибка в основном цикле: {e}")
+        
+        print(f"Ожидание {interval_hours} часов до следующей отправки...")
         time.sleep(interval_hours * 3600)
 
 def main():
