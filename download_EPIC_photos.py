@@ -1,15 +1,13 @@
-import requests
 import os
-from urllib.parse import urlparse
 from datetime import datetime
+import requests
+from download_tools import save_image_from_url  # импортируем общую функцию
 
 FOLDER_NAME = 'images'
 
 def get_epic_images(api_key, count=10):
     url = "https://api.nasa.gov/EPIC/api/natural"
-    params = {
-        "api_key": api_key,
-    }
+    params = {"api_key": api_key}
     response = requests.get(url, params=params)
     response.raise_for_status()
     data = response.json()
@@ -25,33 +23,12 @@ def get_epic_images(api_key, count=10):
         images.append(image_url)
     return images
 
-def get_file_extension(url):
-    path = urlparse(url).path
-    result = os.path.splitext(path)
-    extension = result[1]
-    return extension
-
-def save_image_from_url(url, folder, index):
-    response = requests.get(url)
-    response.raise_for_status()
-    
-    extension = get_file_extension(url)
-    if not extension:
-        extension = '.jpg'
-    
-    file_path = os.path.join(folder, f'epic_photo_{index}{extension}')
-    
-    with open(file_path, 'wb') as file:
-        file.write(response.content)
-
 def download_epic_images(api_key, folder=FOLDER_NAME, count=10):
-    os.makedirs(folder, exist_ok=True)
-    
     epic_links = get_epic_images(api_key, count)
     
     for index, link in enumerate(epic_links):
         print(f"Скачиваю {index + 1} из {len(epic_links)}: {link}")
-        save_image_from_url(link, folder, index)
+        save_image_from_url(link, folder, index, prefix='epic_photo')  # используем общую функцию
     
     print(f"Готово! Скачано {len(epic_links)} EPIC фото в папку '{folder}'")
     return len(epic_links)
@@ -67,13 +44,8 @@ def main():
     
     try:
         download_epic_images(api_key=api_key, folder=FOLDER_NAME, count=10)
-    
-    except requests.exceptions.RequestException as e:
-        print(f"Ошибка при загрузке: {e}")
-    except KeyError as e:
-        print(f"Ошибка в структуре данных API: {e}")
     except Exception as e:
-        print(f"Неожиданная ошибка: {e}")
+        print(f"Ошибка: {e}")
 
 if __name__ == '__main__':
     main()
