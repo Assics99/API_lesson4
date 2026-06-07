@@ -16,12 +16,9 @@
    git clone <URL вашего репозитория>
    cd <название папки проекта>
    ```
-
-2. Создайте файл requirements.txt:
-   ```bash
-   echo "requests>=2.31.0
-   python-dotenv>=1.0.0" > requirements.txt
-   ```
+   
+2. Установите зависимости:
+   `pip install -r requirements.txt`
 
 3. Установите зависимости:
    `pip install -r requirements.txt`
