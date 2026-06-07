@@ -26,15 +26,15 @@ def validate_environment():
     from dotenv import load_dotenv
     load_dotenv()
     
-    BOT_TOKEN = os.environ.get('TG_KEY')
-    CHAT_ID = os.environ.get('TG_CHAT_ID')
+    bot_token = os.environ.get('TG_KEY')
+    chat_id = os.environ.get('TG_CHAT_ID')
     
     if not BOT_TOKEN:
         raise ValueError("Ошибка: переменная окружения TG_KEY не установлена")
     if not CHAT_ID:
         raise ValueError("Ошибка: переменная окружения TG_CHAT_ID не установлена")
     
-    return BOT_TOKEN, CHAT_ID
+    return bot_token, chat_id
 
 def parse_arguments():
     """Разбирает аргументы командной строки"""
@@ -64,10 +64,10 @@ def run_bot_loop(bot, chat_id, folder, interval_hours):
 
 def main():
     try:
-        BOT_TOKEN, CHAT_ID = validate_environment()
+        bot_token, chat_id = validate_environment()
         args = parse_arguments()
         
-        bot = telegram.Bot(token=BOT_TOKEN)
+        bot = telegram.Bot(token=bot_token)
         print(f"Запуск бота. Папка: {args.folder}, Интервал: {args.interval} часов")
         run_bot_loop(bot, CHAT_ID, args.folder, args.interval)
         
