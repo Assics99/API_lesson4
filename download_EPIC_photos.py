@@ -37,9 +37,9 @@ def main():
     from dotenv import load_dotenv
     load_dotenv()
     
-    api_key = os.environ.get('API_KEY')
+    api_key = os.environ.get('NASA_API_KEY')
     if not api_key:
-        print("Ошибка: переменная окружения API_KEY не установлена")
+        print("Ошибка: переменная окружения NASA_API_KEY не установлена")
         return
     
     try:
