@@ -36,12 +36,30 @@
 3. Заполните форму (укажите имя и email) и нажмите Signup.
 4. Скопируйте полученный ключ.
 
+### Telegram Bot Token
+
+Токен нужен для публикации фотографий в Telegram-канале.
+
+1. Напишите в Telegram @BotFather
+2. Отправьте команду /newbot
+3. Придумайте имя и username для бота (username должен заканчиваться на bot)
+4. Скопируйте полученный токен (например, 1234567890:ABCdefGHIjklMNOpqrsTUVwxyz)
+
+### Telegram Chat ID
+
+ID чата или канала, куда бот будет отправлять фотографии.
+
+- Для канала: добавьте бота в администраторы канала, затем перешлите любое сообщение из канала в @userinfobot — вы увидите ID с минусом (например, -1001234567890)
+- Для личного чата: напишите @userinfobot и получите свой ID
+
 ## Настройка переменных окружения
 
 Для безопасного хранения ключа его нужно поместить в переменные окружения. Создайте в корне проекта файл `.env`:
 
 ```env
 NASA_API_KEY=ваш_ключ_от_NASA
+TELEGRAM_BOT_TOKEN=ваш_токен_от_BotFather
+TELEGRAM_CHAT_ID=@ваш_канал_или_id_чата
 ```
 
 Примечание: убедитесь, что файл .env добавлен в `.gitignore`, чтобы случайно не опубликовать секретные данные на GitHub.
@@ -50,12 +68,14 @@ NASA_API_KEY=ваш_ключ_от_NASA
 
 Запустите в консоли (временно, для проверки):
 ```bash
-python -c "from dotenv import load_dotenv; import os; load_dotenv(); print('NASA_API_KEY:', bool(os.getenv('NASA_API_KEY')))"
+python -c "from dotenv import load_dotenv; import os; load_dotenv(); print('NASA_API_KEY:', bool(os.getenv('NASA_API_KEY'))); print('TELEGRAM_BOT_TOKEN:', bool(os.getenv('TELEGRAM_BOT_TOKEN'))); print('TELEGRAM_CHAT_ID:', bool(os.getenv('TELEGRAM_CHAT_ID')))"
 ```
 
 Вывод должен быть:
 ```text
 NASA_API_KEY: True
+TELEGRAM_BOT_TOKEN: True
+TELEGRAM_CHAT_ID: True
 ```
 
 ## Быстрый запуск
