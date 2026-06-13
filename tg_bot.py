@@ -20,13 +20,13 @@ def validate_environment():
     from dotenv import load_dotenv
     load_dotenv()
     
-    bot_token = os.environ.get('TG_KEY')
-    chat_id = os.environ.get('TG_CHAT_ID')
+    bot_token = os.environ.get('NASA_TG_KEY')
+    chat_id = os.environ.get('NASA_TG_CHAT_ID')
     
     if not bot_token:
-        raise ValueError("Ошибка: переменная окружения TG_KEY не установлена")
+        raise ValueError("Ошибка: переменная окружения NASA_TG_KEY не установлена")
     if not chat_id:
-        raise ValueError("Ошибка: переменная окружения TG_CHAT_ID не установлена")
+        raise ValueError("Ошибка: переменная окружения NASA_TG_CHAT_ID не установлена")
     
     return bot_token, chat_id
 
@@ -79,17 +79,12 @@ def run_bot_loop(bot, chat_id, folder, interval_hours, retry_delay=5):
         time.sleep(interval_hours * 3600)
 
 def main():
-    try:
-        bot_token, chat_id = validate_environment()
-        args = parse_arguments()
-        
-        bot = telegram.Bot(token=bot_token)
-        print(f"Запуск бота. Папка: {args.folder}, Интервал: {args.interval} часов")
-        run_bot_loop(bot, chat_id, args.folder, args.interval)
-        
-    except ValueError as e:
-        print(e)
-        return
+    bot_token, chat_id = validate_environment()
+    args = parse_arguments()
+    
+    bot = telegram.Bot(token=bot_token)
+    print(f"Запуск бота. Папка: {args.folder}, Интервал: {args.interval} часов")
+    run_bot_loop(bot, chat_id, args.folder, args.interval)
 
 if __name__ == "__main__":
     main()
