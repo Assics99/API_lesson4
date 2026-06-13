@@ -16,14 +16,11 @@
    git clone <URL вашего репозитория>
    cd <название папки проекта>
    ```
-   
+
 2. Установите зависимости:
    `pip install -r requirements.txt`
 
-3. Установите зависимости:
-   `pip install -r requirements.txt`
-
-4. Проверьте, что все библиотеки установились без ошибок:
+3. Проверьте, что все библиотеки установились без ошибок:
    `pip list`
 
 ## Настройка API-ключей
@@ -53,12 +50,12 @@ NASA_API_KEY=ваш_ключ_от_NASA
 
 Запустите в консоли (временно, для проверки):
 ```bash
-python -c "from dotenv import load_dotenv; import os; load_dotenv(); print('API_KEY:', bool(os.getenv('API_KEY')))"
+python -c "from dotenv import load_dotenv; import os; load_dotenv(); print('NASA_API_KEY:', bool(os.getenv('NASA_API_KEY')))"
 ```
 
 Вывод должен быть:
 ```text
-API_KEY: True
+NASA_API_KEY: True
 ```
 
 ## Быстрый запуск
@@ -66,7 +63,7 @@ API_KEY: True
 Пример запуска скрипта:
 
 ```bash
-python main.py
+python download_NASA_photos.py
 ```
 
 Скрипт не выводит сообщения в консоль. Фотографии сохраняются в папку `images/`
@@ -106,7 +103,7 @@ photo_5.jpg  photo_6.jpg  photo_7.jpg  photo_8.jpg  photo_9.jpg
 Ошибка: `ModuleNotFoundError: No module named 'requests'`
 Решение: Запустите `pip install -r requirements.txt`
 
-Ошибка: `KeyError: 'API_KEY'`
+Ошибка: `KeyError: 'NASA_API_KEY'`
 Решение: Проверьте наличие `API_KEY=ваш_ключ` в файле `.env`
 
 Ошибка: `requests.exceptions.HTTPError: 403`
@@ -119,7 +116,7 @@ photo_5.jpg  photo_6.jpg  photo_7.jpg  photo_8.jpg  photo_9.jpg
 
 Для запуска скрипта выполните команду:
 ```bash
-python main.py
+python download_NASA_photos.py
 ```
 
 ### Что делает скрипт
