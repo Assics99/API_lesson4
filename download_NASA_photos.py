@@ -1,6 +1,6 @@
 import os
 import requests
-from download_tools import save_image_from_url  # импортируем общую функцию
+from download_tools import save_image_from_url
 
 FOLDER_NAME = 'images'
 
@@ -11,10 +11,7 @@ def get_photos_links_nasa(api_key, count=10):
     response.raise_for_status()
     data = response.json()
     
-    links = []
-    for item in data:
-        if 'url' in item:
-            links.append(item['url'])
+    links = [item['url'] for item in data if 'url' in item]
     return links
 
 def download_nasa_images(api_key, folder=FOLDER_NAME, count=10):
@@ -22,7 +19,7 @@ def download_nasa_images(api_key, folder=FOLDER_NAME, count=10):
     
     for i, link in enumerate(nasa_links):
         print(f"Скачиваю {i+1} из {len(nasa_links)}: {link}")
-        save_image_from_url(link, folder, i, prefix='nasa_photo')  # используем общую функцию
+        save_image_from_url(link, folder, i, prefix='nasa_photo')
     
     print(f"Готово! Скачано {len(nasa_links)} фото в папку '{folder}'")
     return len(nasa_links)
