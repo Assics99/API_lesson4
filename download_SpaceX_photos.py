@@ -1,5 +1,5 @@
 import requests
-from download_tools import save_image_from_url  # импортируем общую функцию
+from download_tools import save_image_from_url
 
 FOLDER_NAME = 'images'
 
@@ -12,9 +12,9 @@ def get_photos_links_spacex(launch_id='5eb87d46ffd86e000604b388'):
 def download_spacex_images(launch_id='5eb87d46ffd86e000604b388', folder=FOLDER_NAME):
     spacex_links = get_photos_links_spacex(launch_id)
     
-    for i, link in enumerate(spacex_links):
-        print(f"Скачиваю {i+1} из {len(spacex_links)}: {link}")
-        save_image_from_url(link, folder, i, prefix='spacex_photo')  # используем общую функцию
+    for i, link in enumerate(spacex_links, start=1):
+        print(f"Скачиваю {i} из {len(spacex_links)}: {link}")
+        save_image_from_url(link, folder, i, prefix='spacex_photo')
     
     print(f"Готово! Скачано {len(spacex_links)} фото в папку '{folder}'")
     return len(spacex_links)
