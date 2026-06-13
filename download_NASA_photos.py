@@ -22,8 +22,8 @@ def get_photos_links_nasa(api_key, count=10):
 def download_nasa_images(api_key, folder=FOLDER_NAME, count=10):
     nasa_links = get_photos_links_nasa(api_key, count)
     
-    for i, link in enumerate(nasa_links):
-        print(f"Скачиваю {i+1} из {len(nasa_links)}: {link}")
+    for i, link in enumerate(nasa_links, start=1):  # ← start=1
+        print(f"Скачиваю {i} из {len(nasa_links)}: {link}")
         save_image_from_url(link, folder, i, prefix='nasa_photo')
     
     print(f"Готово! Скачано {len(nasa_links)} фото в папку '{folder}'")
