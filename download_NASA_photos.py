@@ -11,7 +11,12 @@ def get_photos_links_nasa(api_key, count=10):
     response.raise_for_status()
     data = response.json()
     
-    links = [item['url'] for item in data if 'url' in item]
+    links = []
+    for item in data:
+        if item.get('media_type') == 'image':
+            image_url = item.get('hdurl') or item.get('url')
+            if image_url:
+                links.append(image_url)
     return links
 
 def download_nasa_images(api_key, folder=FOLDER_NAME, count=10):
