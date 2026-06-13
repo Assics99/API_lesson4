@@ -1,7 +1,7 @@
 import os
 from datetime import datetime
 import requests
-from download_tools import save_image_from_url  # импортируем общую функцию
+from download_tools import save_image_from_url
 
 FOLDER_NAME = 'images'
 
@@ -26,9 +26,9 @@ def get_epic_images(api_key, count=10):
 def download_epic_images(api_key, folder=FOLDER_NAME, count=10):
     epic_links = get_epic_images(api_key, count)
     
-    for index, link in enumerate(epic_links):
-        print(f"Скачиваю {index + 1} из {len(epic_links)}: {link}")
-        save_image_from_url(link, folder, index, prefix='epic_photo')  # используем общую функцию
+    for i, link in enumerate(epic_links, start=1):
+        print(f"Скачиваю {i} из {len(epic_links)}: {link}")
+        save_image_from_url(link, folder, i, prefix='epic_photo')
     
     print(f"Готово! Скачано {len(epic_links)} EPIC фото в папку '{folder}'")
     return len(epic_links)
