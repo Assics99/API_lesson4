@@ -20,13 +20,13 @@ def validate_environment():
     from dotenv import load_dotenv
     load_dotenv()
     
-    bot_token = os.environ.get('NASA_TG_KEY')
-    chat_id = os.environ.get('NASA_TG_CHAT_ID')
+    bot_token = os.environ.get('TELEGRAM_BOT_TOKEN')
+    chat_id = os.environ.get('TELEGRAM_CHAT_ID')
     
     if not bot_token:
-        raise ValueError("Ошибка: переменная окружения NASA_TG_KEY не установлена")
+        raise ValueError("Ошибка: переменная окружения TELEGRAM_BOT_TOKEN не установлена")
     if not chat_id:
-        raise ValueError("Ошибка: переменная окружения NASA_TG_CHAT_ID не установлена")
+        raise ValueError("Ошибка: переменная окружения TELEGRAM_CHAT_ID не установлена")
     
     return bot_token, chat_id
 
